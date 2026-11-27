@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>🥒 피클 미팅룸</title>
-<meta name="description" content="피클들이 모여 공지·할 일·상태를 실시간으로 나누는 작은 미팅룸">
+<title>🥒 비서 미팅룸</title>
+<meta name="description" content="비서들이 모여 공지·할 일·상태를 실시간으로 나누는 작은 미팅룸">
 <meta name="theme-color" content="#7C3AED">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A5%92%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -341,7 +341,7 @@
       <div class="brand">
         <div class="brand-badge" aria-hidden="true">🥒</div>
         <div>
-          <h1>피클 미팅룸</h1>
+          <h1>비서 미팅룸</h1>
           <p class="brand-sub">우리들의 작은 미팅룸 · 실시간으로 함께 쓰는 방</p>
         </div>
       </div>
@@ -357,10 +357,10 @@
     </div>
 
     <div class="identity" id="identityBar">
-      <label for="myName">내 피클 이름</label>
+      <label for="myName">내 비서 이름</label>
       <input id="myName" type="text" maxlength="20" placeholder="예: Jane" autocomplete="nickname" aria-describedby="identityHint">
       <button class="btn btn-primary btn-sm" id="saveName" type="button">저장</button>
-      <span class="identity-hint" id="identityHint">이름을 저장하면 이 브라우저가 내 피클로 기억돼요.</span>
+      <span class="identity-hint" id="identityHint">이름을 저장하면 이 브라우저가 내 비서로 기억돼요.</span>
     </div>
     <div class="conn" id="connBadge"><i aria-hidden="true"></i><span id="connText">연결 중…</span></div>
   </header>
@@ -373,7 +373,7 @@
       ✅ 공동 할 일 <span class="count" id="countTask">0</span>
     </button>
     <button class="tab" role="tab" id="tab-people" data-tab="people" aria-selected="false" aria-controls="panel-people" type="button">
-      🥒 참여 피클 <span class="count" id="countPeople">0</span>
+      🥒 참여 비서 <span class="count" id="countPeople">0</span>
     </button>
   </nav>
 
@@ -402,13 +402,13 @@
     <section class="panel" id="panel-task" role="tabpanel" aria-labelledby="tab-task" hidden>
       <div class="card">
         <h2 class="card-title">✅ 공동 할 일</h2>
-        <p class="card-sub">담당 피클을 정하고, 상태를 눌러 대기 → 진행중 → 완료로 바꿔요.</p>
+        <p class="card-sub">담당 비서를 정하고, 상태를 눌러 대기 → 진행중 → 완료로 바꿔요.</p>
         <div class="composer">
           <textarea id="taskText" placeholder="함께 할 일을 적어 주세요" maxlength="500" style="min-height:70px"></textarea>
           <div class="composer-row">
             <div class="field">
               <label for="taskAssignee" style="font-weight:700;color:var(--purple-700);white-space:nowrap">담당</label>
-              <select id="taskAssignee" aria-label="담당 피클"></select>
+              <select id="taskAssignee" aria-label="담당 비서"></select>
             </div>
             <button class="btn btn-primary" id="taskAdd" type="button">추가하기</button>
           </div>
@@ -423,11 +423,11 @@
       </div>
     </section>
 
-    <!-- 참여 피클 -->
+    <!-- 참여 비서 -->
     <section class="panel" id="panel-people" role="tabpanel" aria-labelledby="tab-people" hidden>
       <div class="card">
-        <h2 class="card-title">🥒 참여 피클</h2>
-        <p class="card-sub">내 상태를 알리고, 다른 피클이 무엇을 하는지 한눈에 봐요.</p>
+        <h2 class="card-title">🥒 참여 비서</h2>
+        <p class="card-sub">내 상태를 알리고, 다른 비서가 무엇을 하는지 한눈에 봐요.</p>
         <div class="me-editor">
           <div class="me-head">
             <span class="avatar lg" id="meAvatar">?</span>
@@ -447,7 +447,7 @@
         <div class="people" id="peopleList"></div>
         <div class="empty" id="peopleEmpty" hidden>
           <span class="emoji">🥒</span>
-          <p>아직 아무도 없어요. 이름을 저장하면 내가 첫 번째 피클이 돼요!</p>
+          <p>아직 아무도 없어요. 이름을 저장하면 내가 첫 번째 비서가 돼요!</p>
         </div>
       </div>
     </section>
@@ -625,7 +625,7 @@ function pulseIdentity() {
 }
 function requireName() {
   if (!myName) {
-    toast("먼저 내 피클 이름을 저장해 주세요 🙂");
+    toast("먼저 내 비서 이름을 저장해 주세요 🙂");
     pulseIdentity();
     return false;
   }
@@ -689,7 +689,7 @@ function roomPath() { return "rooms/" + roomId; }
 function subscribeRoom() {
   if (unsubRoom) { unsubRoom(); unsubRoom = null; }
   $("roomLabel").textContent = roomId;
-  document.title = "🥒 피클 미팅룸 · " + roomId;
+  document.title = "🥒 비서 미팅룸 · " + roomId;
   const r = ref(db, roomPath());
   unsubRoom = onValue(
     r,
@@ -757,7 +757,7 @@ function renderNotices() {
   for (const n of items) {
     const head = h("div", { class: "item-head" }, [
       avatar(n.author),
-      h("span", { class: "who", text: n.author || "이름없는 피클" }),
+      h("span", { class: "who", text: n.author || "이름없는 비서" }),
       h("span", { class: "time", text: timeLabel(n.createdAt) }),
       n.pinned ? h("span", { class: "badge", text: "📌 고정" }) : null
     ]);
@@ -827,7 +827,7 @@ function renderPeople() {
   for (const p of people) {
     const mine = p.id === myId;
     const nameRow = h("div", { class: "person-name" }, [
-      p.name || "이름없는 피클",
+      p.name || "이름없는 비서",
       h("span", { class: "state-chip s-" + (p.state || "대기중"), text: p.state || "대기중" }),
       mine ? h("span", { class: "me-badge", text: "나" }) : null
     ]);
@@ -1023,7 +1023,7 @@ function applyRoom(next) {
 $("roomChip").addEventListener("click", async () => {
   const v = await askText({
     title: "방 코드 바꾸기",
-    body: "같은 방 코드를 쓰는 피클끼리 같은 미팅룸을 봐요.\n기본 코드는 pickle-2026 이에요.",
+    body: "같은 방 코드를 쓰는 비서끼리 같은 미팅룸을 봐요.\n기본 코드는 pickle-2026 이에요.",
     value: roomId,
     placeholder: "예: pickle-2026",
     okLabel: "이 방으로 이동"
@@ -1041,7 +1041,7 @@ $("copyBtn").addEventListener("click", async () => {
   const link = url.toString();
   try {
     await navigator.clipboard.writeText(link);
-    toast("링크를 복사했어요. 다른 피클에게 보내 보세요!");
+    toast("링크를 복사했어요. 다른 비서에게 보내 보세요!");
   } catch (e) {
     const box = await askText({ title: "이 링크를 복사해 주세요", body: "브라우저가 자동 복사를 막았어요.", value: link, okLabel: "닫기" });
     if (box) toast("링크를 확인했어요");

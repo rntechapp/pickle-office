@@ -315,6 +315,100 @@
   .modal-actions{display:flex;gap:10px;justify-content:flex-end}
   .btn-danger{background:linear-gradient(140deg,#E15B5B,#C93A3A);color:#fff;box-shadow:0 8px 18px rgba(201,58,58,.24)}
 
+  /* ---------- 실시간 비서 오피스 (디오라마) ---------- */
+  .office-card{overflow:hidden;padding:18px 18px 16px}
+  .office-head{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:flex-end;justify-content:space-between}
+  .office-head .card-sub{margin:2px 0 0}
+  .pill-bar{display:flex;flex-wrap:wrap;gap:8px;margin:13px 0 12px}
+  .pill{
+    display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border-radius:999px;
+    border:1.5px solid var(--lav-3);background:#fff;color:var(--ink-soft);
+    font-weight:800;font-size:14.5px;line-height:1.1;letter-spacing:-.01em;
+    box-shadow:0 3px 10px rgba(124,58,237,.07);
+    transition:transform .12s ease, background .15s ease, box-shadow .15s ease, color .15s ease;
+  }
+  .pill:active{transform:translateY(1px)}
+  .pill[disabled]{opacity:.6;cursor:progress}
+  .pill.on{color:var(--purple-700);border-color:var(--purple);background:linear-gradient(140deg,#F6F0FF,#FFFFFF);box-shadow:0 4px 14px rgba(124,58,237,.18)}
+  .pill.live{color:#0B7A5B;border-color:#BFEAD9;background:linear-gradient(140deg,#F0FDF8,#FFFFFF);cursor:default}
+  .pill.live .live-dot{width:10px;height:10px;border-radius:50%;background:#22C55E;box-shadow:0 0 0 4px rgba(34,197,94,.18)}
+  .pill.calling{color:#fff;border-color:transparent;background:linear-gradient(140deg,#FB7185,#E11D48);box-shadow:0 8px 20px rgba(225,29,72,.3);animation:callGlow 1.9s ease-in-out infinite}
+  @keyframes callGlow{0%,100%{box-shadow:0 8px 20px rgba(225,29,72,.26)}50%{box-shadow:0 8px 28px rgba(225,29,72,.52)}}
+
+  .diorama{
+    position:relative;width:100%;border-radius:20px;overflow:hidden;
+    container-type:inline-size;background:#FBF5EC;
+    box-shadow:inset 0 0 0 1px rgba(160,120,80,.16), 0 12px 28px rgba(120,80,50,.10);
+  }
+  .diorama > img{display:block;width:100%;border-radius:20px;user-select:none;-webkit-user-drag:none}
+  .diorama.no-motion .char-body{animation:none}
+
+  .zone{position:absolute;transform:translate(-50%,-50%);pointer-events:none;z-index:4}
+  .zone-pill{
+    display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:999px;
+    background:rgba(255,255,255,.88);border:1px solid rgba(255,255,255,.95);
+    box-shadow:0 4px 12px rgba(110,70,40,.20);
+    font-weight:800;font-size:max(8.5px,1.08cqw);color:#7A4A2A;white-space:nowrap;
+    letter-spacing:-.02em;line-height:1.55;backdrop-filter:blur(4px);
+    transition:background .2s ease, color .2s ease, box-shadow .2s ease;
+  }
+  .zone.hot{z-index:9}
+  .zone.hot .zone-pill{
+    background:linear-gradient(140deg,#8B5CF6,#6D28D9);color:#fff;border-color:rgba(255,255,255,.9);
+    animation:zonePulse 1.7s ease-in-out infinite;
+  }
+  @keyframes zonePulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(124,58,237,.5), 0 4px 12px rgba(110,70,40,.2)}
+    55%{box-shadow:0 0 0 11px rgba(124,58,237,0), 0 4px 12px rgba(110,70,40,.2)}
+  }
+
+  .char{
+    position:absolute;transform:translate(-50%,-100%);
+    width:6.6cqw;min-width:24px;max-width:66px;
+    padding:0;border:0;background:none;cursor:pointer;z-index:6;
+    -webkit-tap-highlight-color:transparent;
+    transition:left .9s cubic-bezier(.35,.1,.25,1), top .9s cubic-bezier(.35,.1,.25,1), opacity .35s ease, filter .35s ease;
+  }
+  .char:focus-visible{outline:none}
+  .char:focus-visible .char-tag{box-shadow:0 0 0 3px rgba(124,58,237,.55)}
+  .char::after{
+    content:"";position:absolute;left:50%;bottom:-4%;width:62%;height:9%;transform:translateX(-50%);
+    border-radius:50%;background:radial-gradient(closest-side,rgba(85,55,30,.30),rgba(85,55,30,0));
+    pointer-events:none;
+  }
+  .char-body{display:block;position:relative;animation:bob 3.6s ease-in-out infinite;will-change:transform}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7%)}}
+  .char svg{display:block;width:100%;height:auto;overflow:visible;filter:drop-shadow(0 3px 4px rgba(90,60,35,.22))}
+  .char.away{opacity:.55;filter:grayscale(.35) saturate(.6)}
+  .char.away .char-body{animation-duration:6.8s}
+  .char.boss,.char.meeting{z-index:8}
+  .char-tag{
+    position:absolute;left:50%;top:100%;transform:translate(-50%,1px);
+    max-width:10em;padding:1px 7px;border-radius:999px;
+    background:rgba(255,255,255,.95);box-shadow:0 2px 7px rgba(90,60,35,.22);
+    font-size:max(8.5px,1.05cqw);font-weight:800;color:#5B3A22;white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis;line-height:1.55;letter-spacing:-.02em;
+    pointer-events:none;
+  }
+  .char-badge{
+    position:absolute;right:-8%;top:-6%;line-height:1;
+    font-size:max(10px,1.28cqw);filter:drop-shadow(0 2px 3px rgba(0,0,0,.28));pointer-events:none;
+  }
+  .bubble{
+    position:absolute;left:50%;bottom:calc(100% + 5px);transform:translateX(-50%);
+    width:max-content;max-width:min(170px,44cqw);padding:6px 10px;border-radius:13px;
+    background:#fff;color:#3B2A1A;border:1px solid rgba(180,140,100,.35);
+    font-size:max(9.5px,1.12cqw);font-weight:700;line-height:1.35;letter-spacing:-.01em;
+    text-align:center;white-space:normal;word-break:break-word;
+    box-shadow:0 10px 22px rgba(90,60,35,.22);z-index:12;
+  }
+  .bubble[hidden]{display:none}
+  .bubble::after{
+    content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);
+    border:7px solid transparent;border-top-color:#fff;margin-top:-1px;
+  }
+  .office-foot{margin:12px 0 0;font-size:13px;color:var(--ink-faint);line-height:1.6}
+
   @media (max-width:620px){
     .app{padding:14px 12px 34px}
     .hero{padding:16px;border-radius:22px}
@@ -364,6 +458,31 @@
     </div>
     <div class="conn" id="connBadge"><i aria-hidden="true"></i><span id="connText">연결 중…</span></div>
   </header>
+
+  <!-- 실시간 비서 오피스 -->
+  <section class="card office-card" id="officeCard" aria-labelledby="officeTitle">
+    <div class="office-head">
+      <div>
+        <h2 class="card-title" id="officeTitle">🏢 실시간 비서 오피스</h2>
+        <p class="card-sub">지금 비서들이 어디서 무엇을 하는지 한눈에 봐요. 캐릭터를 누르면 상태 메시지가 열려요.</p>
+      </div>
+    </div>
+
+    <div class="pill-bar">
+      <button class="pill on" id="motionBtn" type="button" aria-pressed="true">✨ 움직임 ON</button>
+      <span class="pill live" id="livePill"><span class="live-dot" aria-hidden="true"></span><strong id="liveCount">0명 가동</strong></span>
+      <button class="pill" id="callBtn" type="button">📢 Jane 보스 호출</button>
+    </div>
+
+    <div class="diorama" id="diorama">
+      <img src="office-bg.png" alt="비서 오피스 디오라마 — 지휘실, 대회의실, 작업 책상, 라운지" width="1254" height="1254">
+      <div class="zone" data-zone="boss" style="left:54%;top:34.4%"><span class="zone-pill">🎯 지휘실</span></div>
+      <div class="zone" data-zone="meet" style="left:20.5%;top:56.6%"><span class="zone-pill">🏛️ 대회의실</span></div>
+      <div class="zone" data-zone="desks" style="left:54.5%;top:40.2%"><span class="zone-pill">💻 작업 책상</span></div>
+      <div class="zone" data-zone="lounge" style="left:70%;top:72.4%"><span class="zone-pill">☕ 라운지</span></div>
+    </div>
+    <p class="office-foot">작업중 → 각자 책상 · 대기중 → 라운지 ☕ · 자리비움 → 입구에서 💤 · <strong>Jane 보스 호출</strong>을 누르면 모두 대회의실로 모여요.</p>
+  </section>
 
   <nav class="tabs" role="tablist" aria-label="미팅룸 메뉴">
     <button class="tab" role="tab" id="tab-notice" data-tab="notice" aria-selected="true" aria-controls="panel-notice" type="button">
@@ -521,7 +640,7 @@ localStorage.setItem(LS_ID, myId);
 let myName = (localStorage.getItem(LS_NAME) || "").trim();
 let myState = isValidState(localStorage.getItem(LS_STATE)) ? localStorage.getItem(LS_STATE) : "대기중";
 let statusMessage = null; // null = 아직 모름(불러오기 전), "" = 비움
-let roomData = { status: {}, notices: {}, tasks: {} };
+let roomData = { status: {}, notices: {}, tasks: {}, meetingCall: null };
 let unsubRoom = null;
 let presenceRef = null;
 let activeTab = "notice";
@@ -695,7 +814,7 @@ function subscribeRoom() {
     r,
     (snap) => {
       const v = snap.val() || {};
-      roomData = { status: v.status || {}, notices: v.notices || {}, tasks: v.tasks || {} };
+      roomData = { status: v.status || {}, notices: v.notices || {}, tasks: v.tasks || {}, meetingCall: v.meetingCall || null };
       if (statusMessage === null) {
         const me = roomData.status[myId];
         if (me && typeof me.stateMsg === "string") statusMessage = me.stateMsg;
@@ -857,6 +976,7 @@ function renderPeople() {
     msgInput.value = (statusMessage !== null ? statusMessage : me.stateMsg) || "";
   }
   renderAssigneeOptions();
+  renderOffice();
 }
 
 function renderAssigneeOptions() {
@@ -875,6 +995,300 @@ function renderAssigneeOptions() {
   else if (myName && names.indexOf(myName) >= 0) sel.value = myName;
   else sel.value = "미지정";
 }
+
+/* ---------------- 실시간 비서 오피스 (디오라마) ---------------- */
+const LS_MOTION = "pickleOffice.motion";
+let motion = localStorage.getItem(LS_MOTION) !== "off";
+let openBubble = null;
+const charEls = new Map();
+
+/* office-bg.png 위 좌표(%). 디오라마 안의 가구 위치를 픽셀 단위로 재서 맞춤. */
+const SPOTS = {
+  boss:    [{ left: 52.5, top: 26.5 }],
+  desks:   [{ left: 40.0, top: 56.9 }, { left: 52.8, top: 56.9 }, { left: 69.8, top: 56.9 }],
+  lounge:  [{ left: 63.3, top: 68.7 }, { left: 69.5, top: 68.7 }, { left: 75.6, top: 68.7 }, { left: 84.4, top: 76.4 }],
+  meeting: [{ left: 20.4, top: 48.3 }, { left: 26.7, top: 51.7 }, { left: 12.9, top: 52.7 }, { left: 27.2, top: 59.9 }, { left: 12.7, top: 60.9 }],
+  away:    [{ left: 42.3, top: 89.2 }, { left: 49.3, top: 89.4 }]
+};
+
+function isAwayState(p) { return !p || !p.state || p.state === "자리비움"; }
+function isBossName(name) {
+  const n = String(name || "").trim();
+  return /보스/.test(n) || /^jane$/i.test(n);
+}
+function charKind(name) {
+  const n = String(name || "");
+  if (/부이/.test(n)) return "buyi";
+  if (/뮤즈/.test(n)) return "muse";
+  if (isBossName(n)) return "boss";
+  if (/annie|애니/i.test(n)) return "annie";
+  return "pickle";
+}
+function stateEmoji(state) {
+  if (state === "작업중") return "💻";
+  if (state === "자리비움") return "💤";
+  return "☕";
+}
+
+function officeLayout(people, meetingActive) {
+  const res = new Map();
+  const counters = { desk: 0, lounge: 0, meet: 0, away: 0 };
+  const take = (list, zone, key) => {
+    const i = counters[key]++;
+    const base = list[i % list.length];
+    const cyc = Math.floor(i / list.length);
+    return { left: base.left + cyc * 3.2, top: base.top + cyc * 1.6, zone };
+  };
+  const active = people.filter((p) => !isAwayState(p));
+  const away = people.filter((p) => isAwayState(p));
+  const ordered = active.slice().sort((a, b) => {
+    const ba = isBossName(a.name) ? 0 : 1, bb = isBossName(b.name) ? 0 : 1;
+    if (ba !== bb) return ba - bb;
+    return String(a.name || "").localeCompare(String(b.name || ""), "ko");
+  });
+
+  if (meetingActive) {
+    const bossP = ordered.find((p) => isBossName(p.name));
+    if (bossP) {
+      const head = SPOTS.meeting[0];
+      res.set(bossP.id, { left: head.left, top: head.top, zone: "meet" });
+      counters.meet = 1;
+    }
+    for (const p of ordered) {
+      if (res.has(p.id)) continue;
+      res.set(p.id, take(SPOTS.meeting, "meet", "meet"));
+    }
+  } else {
+    for (const p of ordered) {
+      if (isBossName(p.name) && p.state === "작업중") {
+        const s = SPOTS.boss[0];
+        res.set(p.id, { left: s.left, top: s.top, zone: "boss" });
+      }
+    }
+    for (const p of ordered) {
+      if (res.has(p.id)) continue;
+      if (p.state === "작업중") res.set(p.id, take(SPOTS.desks, "desks", "desk"));
+      else res.set(p.id, take(SPOTS.lounge, "lounge", "lounge"));
+    }
+  }
+  for (const p of away) res.set(p.id, take(SPOTS.away, "away", "away"));
+  return res;
+}
+
+function charSvg(kind) {
+  if (kind === "boss") {
+    // 보라색 ㅅ 모양 피클 + 작은 금관
+    return '<svg viewBox="0 0 100 104" aria-hidden="true">'
+      + '<path d="M50 30 L23 81" stroke="#7C3AED" stroke-width="31" stroke-linecap="round" fill="none"/>'
+      + '<path d="M50 30 L77 81" stroke="#7C3AED" stroke-width="31" stroke-linecap="round" fill="none"/>'
+      + '<path d="M50 30 L23 81" stroke="#8B5CF6" stroke-width="27" stroke-linecap="round" fill="none"/>'
+      + '<path d="M50 30 L77 81" stroke="#8B5CF6" stroke-width="27" stroke-linecap="round" fill="none"/>'
+      + '<ellipse cx="43" cy="37" rx="3.6" ry="4.4" fill="#2B2140"/>'
+      + '<ellipse cx="57" cy="37" rx="3.6" ry="4.4" fill="#2B2140"/>'
+      + '<circle cx="44.3" cy="35.2" r="1.3" fill="#fff"/>'
+      + '<circle cx="58.3" cy="35.2" r="1.3" fill="#fff"/>'
+      + '<path d="M45.5 45 Q50 49.5 54.5 45" stroke="#4B2E83" stroke-width="2.2" fill="none" stroke-linecap="round"/>'
+      + '<ellipse cx="35" cy="43" rx="4.2" ry="2.8" fill="#F9A8D4" opacity=".85"/>'
+      + '<ellipse cx="65" cy="43" rx="4.2" ry="2.8" fill="#F9A8D4" opacity=".85"/>'
+      + '<path d="M35 24 L35 10 L45 17 L50 5 L55 17 L65 10 L65 24 Z" fill="#F7C948" stroke="#D9A21B" stroke-width="2.6" stroke-linejoin="round"/>'
+      + '<circle cx="50" cy="7.5" r="3.2" fill="#FFF4C2"/>'
+      + '</svg>';
+  }
+  if (kind === "annie") {
+    // 라벤더 토끼 봇
+    return '<svg viewBox="0 0 100 104" aria-hidden="true">'
+      + '<g stroke="#A78BFA" stroke-width="2.6">'
+      + '<rect x="29" y="5" width="13" height="35" rx="6.5" fill="#E9D5FF" transform="rotate(-11 35.5 22)"/>'
+      + '<rect x="58" y="5" width="13" height="35" rx="6.5" fill="#E9D5FF" transform="rotate(11 64.5 22)"/>'
+      + '</g>'
+      + '<rect x="32" y="11" width="6" height="23" rx="3" fill="#FBCFE8" transform="rotate(-11 35 22)"/>'
+      + '<rect x="62" y="11" width="6" height="23" rx="3" fill="#FBCFE8" transform="rotate(11 65 22)"/>'
+      + '<ellipse cx="50" cy="67" rx="31" ry="30" fill="#E6DCFF" stroke="#A78BFA" stroke-width="2.8"/>'
+      + '<ellipse cx="39" cy="62" rx="5.2" ry="6.2" fill="#2B2140"/>'
+      + '<ellipse cx="61" cy="62" rx="5.2" ry="6.2" fill="#2B2140"/>'
+      + '<circle cx="40.8" cy="59.6" r="1.9" fill="#fff"/>'
+      + '<circle cx="62.8" cy="59.6" r="1.9" fill="#fff"/>'
+      + '<ellipse cx="29" cy="73" rx="5" ry="3.2" fill="#F9A8D4" opacity=".9"/>'
+      + '<ellipse cx="71" cy="73" rx="5" ry="3.2" fill="#F9A8D4" opacity=".9"/>'
+      + '<path d="M45 72 Q50 77 55 72" stroke="#7C3AED" stroke-width="2.4" fill="none" stroke-linecap="round"/>'
+      + '<circle cx="50" cy="87" r="3" fill="#F472B6"/>'
+      + '</svg>';
+  }
+  if (kind === "buyi") {
+    // 하늘빛 민트 크리터
+    return '<svg viewBox="0 0 100 104" aria-hidden="true">'
+      + '<ellipse cx="29" cy="27" rx="9" ry="12" fill="#A5F3FC" stroke="#38BDF8" stroke-width="2.6" transform="rotate(-20 29 27)"/>'
+      + '<ellipse cx="71" cy="27" rx="9" ry="12" fill="#A5F3FC" stroke="#38BDF8" stroke-width="2.6" transform="rotate(20 71 27)"/>'
+      + '<ellipse cx="50" cy="63" rx="33" ry="33" fill="#7DD3FC" stroke="#38BDF8" stroke-width="2.8"/>'
+      + '<ellipse cx="50" cy="79" rx="17" ry="12" fill="#BAE6FD" opacity=".9"/>'
+      + '<ellipse cx="38" cy="56" rx="8" ry="9" fill="#0F2A3D"/>'
+      + '<ellipse cx="62" cy="56" rx="8" ry="9" fill="#0F2A3D"/>'
+      + '<circle cx="41" cy="52" r="3" fill="#fff"/>'
+      + '<circle cx="65" cy="52" r="3" fill="#fff"/>'
+      + '<circle cx="35.5" cy="60" r="1.6" fill="#fff" opacity=".8"/>'
+      + '<circle cx="59.5" cy="60" r="1.6" fill="#fff" opacity=".8"/>'
+      + '<path d="M46 70 Q48.5 73.5 50 70 Q51.5 73.5 54 70" stroke="#0F2A3D" stroke-width="2" fill="none" stroke-linecap="round"/>'
+      + '<ellipse cx="25" cy="68" rx="4.5" ry="3" fill="#FB7185" opacity=".55"/>'
+      + '<ellipse cx="75" cy="68" rx="4.5" ry="3" fill="#FB7185" opacity=".55"/>'
+      + '</svg>';
+  }
+  if (kind === "muse") {
+    // 코랄 앰버 곰 크리터
+    return '<svg viewBox="0 0 100 104" aria-hidden="true">'
+      + '<circle cx="23" cy="35" r="13" fill="#FB923C" stroke="#EA580C" stroke-width="2.6"/>'
+      + '<circle cx="77" cy="35" r="13" fill="#FB923C" stroke="#EA580C" stroke-width="2.6"/>'
+      + '<circle cx="23" cy="35" r="6.6" fill="#FED7AA"/>'
+      + '<circle cx="77" cy="35" r="6.6" fill="#FED7AA"/>'
+      + '<ellipse cx="50" cy="63" rx="33" ry="32" fill="#FB923C" stroke="#EA580C" stroke-width="2.8"/>'
+      + '<ellipse cx="50" cy="74" rx="17" ry="13" fill="#FFEDD5"/>'
+      + '<ellipse cx="50" cy="68" rx="5" ry="3.6" fill="#7C2D12"/>'
+      + '<path d="M50 71 v4.5 M50 75.5 q-4.5 4 -8 1 M50 75.5 q4.5 4 8 1" stroke="#7C2D12" stroke-width="2.1" fill="none" stroke-linecap="round"/>'
+      + '<ellipse cx="37" cy="57" rx="4.4" ry="5.2" fill="#2B2140"/>'
+      + '<ellipse cx="63" cy="57" rx="4.4" ry="5.2" fill="#2B2140"/>'
+      + '<circle cx="38.6" cy="55" r="1.6" fill="#fff"/>'
+      + '<circle cx="64.6" cy="55" r="1.6" fill="#fff"/>'
+      + '<ellipse cx="24" cy="64" rx="4.6" ry="3" fill="#FB7185" opacity=".45"/>'
+      + '<ellipse cx="76" cy="64" rx="4.6" ry="3" fill="#FB7185" opacity=".45"/>'
+      + '</svg>';
+  }
+  // 기본: 초록 피클
+  return '<svg viewBox="0 0 100 104" aria-hidden="true">'
+    + '<path d="M50 22 C50 15 52 11 56 9" stroke="#65A30D" stroke-width="4" fill="none" stroke-linecap="round"/>'
+    + '<ellipse cx="50" cy="58" rx="30" ry="39" fill="#A3E635" stroke="#65A30D" stroke-width="2.8"/>'
+    + '<circle cx="32" cy="44" r="2.4" fill="#84CC16" opacity=".8"/>'
+    + '<circle cx="68" cy="52" r="2.6" fill="#84CC16" opacity=".8"/>'
+    + '<circle cx="38" cy="76" r="2.2" fill="#84CC16" opacity=".8"/>'
+    + '<circle cx="64" cy="80" r="2.2" fill="#84CC16" opacity=".8"/>'
+    + '<ellipse cx="40" cy="56" rx="4.4" ry="5.2" fill="#2B2140"/>'
+    + '<ellipse cx="60" cy="56" rx="4.4" ry="5.2" fill="#2B2140"/>'
+    + '<circle cx="41.6" cy="54" r="1.6" fill="#fff"/>'
+    + '<circle cx="61.6" cy="54" r="1.6" fill="#fff"/>'
+    + '<path d="M45 68 Q50 72.5 55 68" stroke="#3F6212" stroke-width="2.2" fill="none" stroke-linecap="round"/>'
+    + '<ellipse cx="30" cy="64" rx="4.2" ry="2.8" fill="#FB7185" opacity=".55"/>'
+    + '<ellipse cx="70" cy="64" rx="4.2" ry="2.8" fill="#FB7185" opacity=".55"/>'
+    + '</svg>';
+}
+
+function bubbleText(p) {
+  if (p.stateMsg) return p.stateMsg;
+  if (isAwayState(p)) return "자리를 비웠어요 💤";
+  if (p.state === "작업중") return "작업 중이에요 💻";
+  return "쉬는 중이에요 ☕";
+}
+
+function createChar(p) {
+  const el = document.createElement("button");
+  el.type = "button";
+  el.className = "char";
+  el.dataset.id = p.id;
+  el.innerHTML = '<span class="char-body"><span class="char-badge"></span></span>'
+    + '<span class="char-tag"></span>'
+    + '<span class="bubble" hidden></span>';
+  el.addEventListener("click", () => {
+    const id = el.dataset.id;
+    openBubble = openBubble === id ? null : id;
+    renderOffice();
+  });
+  return el;
+}
+
+function applyChar(el, p, spot, meeting) {
+  const away = isAwayState(p);
+  el.style.left = spot.left + "%";
+  el.style.top = spot.top + "%";
+  el.dataset.zone = spot.zone;
+  el.classList.toggle("away", away);
+  el.classList.toggle("boss", isBossName(p.name));
+  el.classList.toggle("meeting", !!meeting && spot.zone === "meet");
+  const body = el.querySelector(".char-body");
+  const kind = charKind(p.name);
+  if (body.dataset.kind !== kind) {
+    body.innerHTML = charSvg(kind) + '<span class="char-badge"></span>';
+    body.dataset.kind = kind;
+  }
+  el.querySelector(".char-badge").textContent = away ? "💤" : stateEmoji(p.state);
+  el.querySelector(".char-tag").textContent = p.name || "이름없는 비서";
+  el.setAttribute("aria-label", (p.name || "비서") + " · " + (p.state || "대기중") + " — " + bubbleText(p));
+  const bubble = el.querySelector(".bubble");
+  if (openBubble === p.id) {
+    bubble.hidden = false;
+    bubble.textContent = bubbleText(p);
+  } else {
+    bubble.hidden = true;
+  }
+}
+
+function renderOffice() {
+  const box = $("diorama");
+  if (!box) return;
+  box.classList.toggle("no-motion", !motion);
+  const people = participantList();
+  const meeting = !!(roomData.meetingCall && roomData.meetingCall.active);
+
+  const activeCount = people.filter((p) => !isAwayState(p)).length;
+  $("liveCount").textContent = activeCount + "명 가동";
+
+  const motionBtn = $("motionBtn");
+  motionBtn.textContent = motion ? "✨ 움직임 ON" : "✨ 움직임 OFF";
+  motionBtn.classList.toggle("on", motion);
+  motionBtn.setAttribute("aria-pressed", String(motion));
+
+  const callBtn = $("callBtn");
+  callBtn.textContent = meeting ? "✅ 호출 해제" : "📢 Jane 보스 호출";
+  callBtn.classList.toggle("calling", meeting);
+
+  const meetZone = box.querySelector('.zone[data-zone="meet"]');
+  if (meetZone) {
+    meetZone.classList.toggle("hot", meeting);
+    meetZone.querySelector(".zone-pill").textContent = meeting ? "🏛️ 대회의실 · 회의 중" : "🏛️ 대회의실";
+  }
+
+  const layout = officeLayout(people, meeting);
+  const seen = new Set();
+  let i = 0;
+  for (const p of people) {
+    seen.add(p.id);
+    let el = charEls.get(p.id);
+    if (!el) {
+      el = createChar(p);
+      charEls.set(p.id, el);
+      box.appendChild(el);
+    }
+    const body = el.querySelector(".char-body");
+    body.style.animationDelay = (i * 0.33).toFixed(2) + "s";
+    applyChar(el, p, layout.get(p.id) || SPOTS.away[0], meeting);
+    i++;
+  }
+  for (const [id, el] of Array.from(charEls)) {
+    if (!seen.has(id)) { el.remove(); charEls.delete(id); if (openBubble === id) openBubble = null; }
+  }
+}
+
+async function toggleMeetingCall() {
+  const meeting = !!(roomData.meetingCall && roomData.meetingCall.active);
+  const btn = $("callBtn");
+  btn.disabled = true;
+  try {
+    await set(ref(db, roomPath() + "/meetingCall"), {
+      active: !meeting,
+      caller: "Jane 보스",
+      updatedAt: Date.now()
+    });
+    toast(!meeting ? "📢 Jane 보스 호출! 모두 대회의실로 모여요" : "✅ 호출을 해제했어요");
+  } catch (e) {
+    toast("호출 실패: " + shortErr(e));
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+$("motionBtn").addEventListener("click", () => {
+  motion = !motion;
+  localStorage.setItem(LS_MOTION, motion ? "on" : "off");
+  renderOffice();
+  toast(motion ? "캐릭터가 살랑살랑 움직여요 ✨" : "움직임을 멈췄어요");
+});
+$("callBtn").addEventListener("click", toggleMeetingCall);
 
 /* ---------------- connection ---------------- */
 function setConn(ok, text) {
@@ -1011,7 +1425,7 @@ function applyRoom(next) {
   roomId = normalizeRoom(next);
   localStorage.setItem(LS_ROOM, roomId);
   statusMessage = null;
-  roomData = { status: {}, notices: {}, tasks: {} };
+  roomData = { status: {}, notices: {}, tasks: {}, meetingCall: null };
   $("statusMsg").value = "";
   const url = new URL(location.href);
   if (roomId === DEFAULT_ROOM) url.searchParams.delete("room");

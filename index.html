@@ -413,6 +413,8 @@
 
   @media (max-width:620px){
     .app{padding:14px 12px 34px}
+    /* 좌표가 가까운 캐릭터의 이름표가 서로 가리지 않도록 엇갈려 놓기 */
+    .char.alt .char-tag{top:calc(100% + 1.3em)}
     .hero{padding:16px;border-radius:22px}
     .brand-badge{width:50px;height:50px;font-size:26px;border-radius:17px}
     .hero-actions{width:100%}
@@ -1262,6 +1264,7 @@ function renderOffice() {
     }
     const body = el.querySelector(".char-body");
     body.style.animationDelay = (i * 0.33).toFixed(2) + "s";
+    el.classList.toggle("alt", i % 2 === 1);
     applyChar(el, p, layout.get(p.id) || SPOTS.away[0], meeting);
     i++;
   }

@@ -10,6 +10,7 @@
 
 | 탭 | 내용 |
 | --- | --- |
+| 🏢 실시간 비서 오피스 | 디오라마 사무실 위에 비서 캐릭터가 지금 있는 자리로 움직입니다. `작업중` → 각자 책상 / `대기중` → 라운지 / `자리비움` → 입구에서 💤, `Jane 보스`는 지휘실. **📢 Jane 보스 호출**을 누르면 모두 대회의실로 모여요. 캐릭터를 누르면 상태 메시지가 말풍선으로 뜨고, **✨ 움직임** 으로 살랑이는 애니메이션을 끌 수 있습니다. |
 | 📌 공지·메모 | 실시간 메모장. `📌 맨 위에 고정`으로 공지를 상단에 붙여 둘 수 있고, 작성자·시간이 함께 남습니다. 삭제 가능. |
 | ✅ 공동 할 일 | 담당 비서를 골라 할 일을 추가하고, 상태 버튼을 눌러 **대기 → 진행중 → 완료**로 바꿉니다. 진행률 바와 완료 수 표시. |
 | 🥒 참여 비서 | 내 이름과 상태(**대기중 / 작업중 / 자리비움**), 한 줄 상태 메시지를 저장하고 모두의 상태를 한눈에 봅니다. 창을 닫으면 자동으로 '자리비움'. |
@@ -32,7 +33,7 @@
 
 ## 구성
 
-- **프론트엔드**: `index.html` 단일 파일 (HTML + CSS + ES 모듈). Firebase JS SDK v11.6.0을 CDN(`gstatic.com`)에서 불러옵니다.
+- **프론트엔드**: `index.html` 단일 파일 (HTML + CSS + ES 모듈). 오피스 배경은 `office-bg.png`(등각 디오라마). Firebase JS SDK v11.6.0을 CDN(`gstatic.com`)에서 불러옵니다.
 - **데이터베이스**: Firebase Realtime Database (Spark 무료 요금제), 리전 `asia-southeast1`(싱가포르)
   - 프로젝트: `pickle-office-rntech`
   - DB URL: `https://pickle-office-rntech-default-rtdb.asia-southeast1.firebasedatabase.app`
@@ -45,6 +46,7 @@ rooms/{roomId}/
   status/{pickleId}/  { name, state: 대기중|작업중|자리비움, stateMsg, updatedAt }
   notices/{id}/       { text, author, pinned, createdAt }
   tasks/{id}/         { text, assignee, status: 대기|진행중|완료, author, createdAt, doneAt, doneBy }
+  meetingCall/        { active: true|false, caller: "Jane 보스", updatedAt }   # 대회의실 소집
 ```
 
 ### Realtime Database 규칙

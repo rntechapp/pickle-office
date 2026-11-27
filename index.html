@@ -871,8 +871,9 @@ function renderAssigneeOptions() {
     sel.appendChild(h("option", { value: n, text: n }));
   }
   sel.dataset.sig = sig;
-  if (prev && names.concat(["미지정"]).indexOf(prev) >= 0) sel.value = prev;
-  else if (myName) sel.value = myName;
+  if (prev && prev !== "미지정" && names.indexOf(prev) >= 0) sel.value = prev;
+  else if (myName && names.indexOf(myName) >= 0) sel.value = myName;
+  else sel.value = "미지정";
 }
 
 /* ---------------- connection ---------------- */

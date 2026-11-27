@@ -340,7 +340,7 @@
     container-type:inline-size;background:#FBF5EC;
     box-shadow:inset 0 0 0 1px rgba(160,120,80,.16), 0 12px 28px rgba(120,80,50,.10);
   }
-  .diorama > img{display:block;width:100%;border-radius:20px;user-select:none;-webkit-user-drag:none}
+  .diorama > img{display:block;width:100%;height:auto;border-radius:20px;user-select:none;-webkit-user-drag:none}
   .diorama.no-motion .char-body{animation:none}
 
   .zone{position:absolute;transform:translate(-50%,-50%);pointer-events:none;z-index:4}
@@ -418,6 +418,10 @@
     .hero{padding-bottom:20px}
     .conn{margin-top:10px;justify-content:flex-end}
     .card{padding:16px;border-radius:20px}
+    .office-card{padding:14px 12px}
+    .pill{padding:8px 12px;font-size:13.5px;gap:5px}
+    .pill-bar{gap:6px;margin:11px 0 10px}
+    .office-foot{font-size:12.5px}
     .tab{padding:10px 12px;font-size:15px}
     .task{flex-wrap:wrap}
     .status-btn{min-width:66px}
@@ -477,7 +481,7 @@
     <div class="diorama" id="diorama">
       <img src="office-bg.png" alt="비서 오피스 디오라마 — 지휘실, 대회의실, 작업 책상, 라운지" width="1254" height="1254">
       <div class="zone" data-zone="boss" style="left:54%;top:34.4%"><span class="zone-pill">🎯 지휘실</span></div>
-      <div class="zone" data-zone="meet" style="left:20.5%;top:56.6%"><span class="zone-pill">🏛️ 대회의실</span></div>
+      <div class="zone" data-zone="meet" style="left:19.5%;top:64%"><span class="zone-pill">🏛️ 대회의실</span></div>
       <div class="zone" data-zone="desks" style="left:54.5%;top:40.2%"><span class="zone-pill">💻 작업 책상</span></div>
       <div class="zone" data-zone="lounge" style="left:70%;top:72.4%"><span class="zone-pill">☕ 라운지</span></div>
     </div>
@@ -1004,11 +1008,11 @@ const charEls = new Map();
 
 /* office-bg.png 위 좌표(%). 디오라마 안의 가구 위치를 픽셀 단위로 재서 맞춤. */
 const SPOTS = {
-  boss:    [{ left: 52.5, top: 26.5 }],
+  boss:    [{ left: 53.2, top: 24.6 }],
   desks:   [{ left: 40.0, top: 56.9 }, { left: 52.8, top: 56.9 }, { left: 69.8, top: 56.9 }],
-  lounge:  [{ left: 63.3, top: 68.7 }, { left: 69.5, top: 68.7 }, { left: 75.6, top: 68.7 }, { left: 84.4, top: 76.4 }],
-  meeting: [{ left: 20.4, top: 48.3 }, { left: 26.7, top: 51.7 }, { left: 12.9, top: 52.7 }, { left: 27.2, top: 59.9 }, { left: 12.7, top: 60.9 }],
-  away:    [{ left: 42.3, top: 89.2 }, { left: 49.3, top: 89.4 }]
+  lounge:  [{ left: 65.0, top: 68.7 }, { left: 70.5, top: 68.7 }, { left: 76.0, top: 68.7 }, { left: 84.5, top: 76.3 }],
+  meeting: [{ left: 20.6, top: 45.2 }, { left: 26.4, top: 51.0 }, { left: 13.1, top: 52.6 }, { left: 27.0, top: 59.8 }, { left: 12.9, top: 60.6 }],
+  away:    [{ left: 42.0, top: 89.2 }, { left: 49.6, top: 89.2 }]
 };
 
 function isAwayState(p) { return !p || !p.state || p.state === "자리비움"; }

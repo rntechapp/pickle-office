@@ -483,13 +483,11 @@
     </div>
 
     <div class="diorama" id="diorama">
-      <img src="office-bg.png" alt="비서 오피스 디오라마 — 지휘실, 대회의실, 작업 책상, 라운지" width="1254" height="1254">
-      <div class="zone" data-zone="boss" style="left:54%;top:34.4%"><span class="zone-pill">🎯 지휘실</span></div>
-      <div class="zone" data-zone="meet" style="left:19.5%;top:65.4%"><span class="zone-pill">🏛️ 대회의실</span></div>
-      <div class="zone" data-zone="desks" style="left:54.5%;top:40.4%"><span class="zone-pill">💻 작업 책상</span></div>
-      <div class="zone" data-zone="lounge" style="left:70%;top:80.8%"><span class="zone-pill">☕ 라운지</span></div>
+      <img src="office-bg.png" alt="비서 오피스 디오라마 — 회의실, 작업 책상, 휴식공간" width="1254" height="1254">
+      <div class="zone" data-zone="meet" style="left:19.5%;top:65.4%"><span class="zone-pill">🏛️ 회의실</span></div>
+      <div class="zone" data-zone="lounge" style="left:70%;top:80.8%"><span class="zone-pill">☕ 휴식공간</span></div>
     </div>
-    <p class="office-foot">작업중 → 각자 책상 · 대기중 → 라운지 ☕ · 자리비움 → 입구에서 💤 · <strong>Jane 보스 호출</strong>을 누르면 모두 대회의실로 모여요.</p>
+    <p class="office-foot">작업중 → 각자 책상 · 대기중 → 휴식공간 ☕ · 자리비움 → 입구에서 💤 · <strong>Jane 보스 호출</strong>을 누르면 모두 회의실로 모여요.</p>
   </section>
 
   <nav class="tabs" role="tablist" aria-label="미팅룸 메뉴">
@@ -1248,7 +1246,7 @@ function renderOffice() {
   const meetZone = box.querySelector('.zone[data-zone="meet"]');
   if (meetZone) {
     meetZone.classList.toggle("hot", meeting);
-    meetZone.querySelector(".zone-pill").textContent = meeting ? "🏛️ 대회의실 · 회의 중" : "🏛️ 대회의실";
+    meetZone.querySelector(".zone-pill").textContent = meeting ? "🏛️ 회의실 · 회의 중" : "🏛️ 회의실";
   }
 
   const layout = officeLayout(people, meeting);
@@ -1283,7 +1281,7 @@ async function toggleMeetingCall() {
       caller: "Jane 보스",
       updatedAt: Date.now()
     });
-    toast(!meeting ? "📢 Jane 보스 호출! 모두 대회의실로 모여요" : "✅ 호출을 해제했어요");
+    toast(!meeting ? "📢 Jane 보스 호출! 모두 회의실로 모여요" : "✅ 호출을 해제했어요");
   } catch (e) {
     toast("호출 실패: " + shortErr(e));
   } finally {

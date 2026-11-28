@@ -491,7 +491,7 @@
 
     <div class="diorama" id="diorama">
       <img src="office-bg.png" alt="비서 오피스 디오라마 — 가로로 긴 반원형 오피스, 지휘실·작업 책상 3개·회의실 원형 테이블·휴식공간·아치형 입구" width="1672" height="941">
-      <div class="zone" data-zone="meet" style="left:16.5%;top:72.5%"><span class="zone-pill">🏛️ 회의실</span></div>
+      <div class="zone" data-zone="meet" style="left:16.5%;top:73%"><span class="zone-pill">🏛️ 회의실</span></div>
       <div class="zone" data-zone="lounge" style="left:81.5%;top:76%"><span class="zone-pill">☕ 휴식공간</span></div>
     </div>
     <p class="office-foot">작업중 → 각자 책상 · 대기중 → 휴식공간 ☕ · 자리비움 → 입구에서 💤 · <strong>Jane 보스 호출</strong>을 누르면 모두 회의실로 모여요.</p>
@@ -1020,7 +1020,7 @@ const SPOTS = {
   boss:    [{ left: 50.3, top: 23.5 }],
   desks:   [{ left: 35.2, top: 65.5 }, { left: 50.0, top: 65.5 }, { left: 63.9, top: 65.5 }],
   lounge:  [{ left: 72.6, top: 62.0 }, { left: 79.4, top: 71.0 }, { left: 87.4, top: 66.0 }, { left: 68.5, top: 69.5 }],
-  meeting: [{ left: 16.5, top: 47.0 }, { left: 8.2, top: 59.0 }, { left: 25.4, top: 55.0 }, { left: 16.6, top: 66.8 }, { left: 10.6, top: 49.5 }, { left: 22.2, top: 48.5 }],
+  meeting: [{ left: 16.5, top: 46.0 }, { left: 8.2, top: 59.0 }, { left: 25.4, top: 55.0 }, { left: 16.6, top: 66.0 }, { left: 10.6, top: 49.5 }, { left: 22.2, top: 48.5 }],
   away:    [{ left: 33.5, top: 68.0 }, { left: 59.0, top: 68.0 }, { left: 26.5, top: 72.5 }, { left: 66.0, top: 73.0 }]
 };
 
@@ -1478,7 +1478,7 @@ function renderOffice() {
   const meetZone = box.querySelector('.zone[data-zone="meet"]');
   if (meetZone) {
     meetZone.classList.toggle("hot", meeting);
-    meetZone.querySelector(".zone-pill").textContent = meeting ? "🏛️ 회의실 · 회의 중" : "🏛️ 회의실";
+    meetZone.querySelector(".zone-pill").textContent = meeting ? "🏛️ 회의 중" : "🏛️ 회의실";
   }
 
   const layout = officeLayout(people, meeting);

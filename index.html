@@ -418,6 +418,54 @@
   }
   .office-foot{margin:12px 0 0;font-size:13px;color:var(--ink-faint);line-height:1.6}
 
+  /* ---------- 작업 책상 모니터 화면: 작업중이면 대표 아이콘이 켜진다 ---------- */
+  .monitor{position:absolute;transform:translate(-50%,-50%);z-index:5;pointer-events:none;
+    --mon-a:#DDD6FE;--mon-a-soft:rgba(167,139,250,.5)}
+  .monitor-glow{
+    position:absolute;left:50%;top:50%;width:250%;height:320%;transform:translate(-50%,-50%);
+    border-radius:50%;opacity:0;transition:opacity .6s ease;
+    background:radial-gradient(closest-side,var(--mon-a-soft),rgba(255,255,255,0) 76%);
+  }
+  .monitor.on .monitor-glow{opacity:1;animation:screenBreath 5s ease-in-out infinite}
+  @keyframes screenBreath{0%,100%{opacity:.5}50%{opacity:.95}}
+  .mon-screen{
+    position:absolute;inset:0;overflow:hidden;border-radius:max(1.5px,.2cqw);
+    background:linear-gradient(168deg,#3A342C 0%,#292319 48%,#1B1712 100%);
+    box-shadow:inset 0 0 0 max(.6px,.055cqw) rgba(66,46,28,.5), inset 0 max(.5px,.08cqw) max(1px,.14cqw) rgba(0,0,0,.6);
+    transition:box-shadow .6s ease;
+  }
+  .monitor.on .mon-screen{
+    box-shadow:inset 0 0 0 max(.6px,.055cqw) rgba(255,255,255,.26), 0 0 max(1px,1cqw) var(--mon-a-soft);
+  }
+  .mon-tint{
+    position:absolute;inset:0;border-radius:max(1.5px,.2cqw);opacity:0;transition:opacity .6s ease;
+    background:radial-gradient(135% 125% at 50% 6%,var(--mon-a-soft),rgba(255,255,255,0) 70%);
+    mix-blend-mode:screen;
+  }
+  .monitor.on .mon-tint{opacity:.9}
+  .mon-icon{
+    position:absolute;inset:4% 6% 6%;display:grid;place-items:center;
+    opacity:0;transform:scale(.8);
+    transition:opacity .45s ease,transform .55s cubic-bezier(.34,1.32,.52,1);
+    filter:drop-shadow(0 0 max(.5px,.24cqw) var(--mon-a-soft));
+  }
+  .mon-icon svg{display:block;height:100%;width:auto;max-width:100%;overflow:visible}
+  .monitor.on .mon-icon{opacity:1;transform:scale(1)}
+  .mon-sheen{
+    position:absolute;inset:0;border-radius:max(1.5px,.2cqw);pointer-events:none;
+    background:linear-gradient(118deg,rgba(255,255,255,.20) 0%,rgba(255,255,255,.06) 24%,rgba(255,255,255,0) 44%);
+    opacity:.5;transition:opacity .6s ease;
+  }
+  .monitor.on .mon-sheen{opacity:.3}
+
+  /* 지휘실 노트북 뒤판에 붙은 보스 스티커 (화면이 뒤를 향해 있다) */
+  .boss-decal{
+    position:absolute;transform:translate(-50%,-50%);z-index:5;pointer-events:none;
+    aspect-ratio:1;opacity:.5;transition:opacity .5s ease,filter .5s ease;
+  }
+  .boss-decal svg{display:block;width:100%;height:100%;overflow:visible}
+  .boss-decal.on{opacity:1;filter:drop-shadow(0 0 max(.6px,.3cqw) rgba(167,139,250,.9))}
+
   @media (max-width:620px){
     .app{padding:14px 12px 34px}
     /* 좌표가 가까운 캐릭터의 이름표가 서로 가리지 않도록 엇갈려 놓기 */
@@ -494,7 +542,7 @@
       <div class="zone" data-zone="meet" style="left:16.5%;top:73%"><span class="zone-pill">🏛️ 회의실</span></div>
       <div class="zone" data-zone="lounge" style="left:81.5%;top:76%"><span class="zone-pill">☕ 휴식공간</span></div>
     </div>
-    <p class="office-foot">작업중 → 각자 책상 · 대기중 → 휴식공간 ☕ · 자리비움 → 입구에서 💤 · <strong>Jane 보스 호출</strong>을 누르면 모두 회의실로 모여요.</p>
+    <p class="office-foot">작업중 → 각자 책상(모니터에 대표 아이콘이 켜져요) · 대기중 → 휴식공간 ☕ · 자리비움 → 입구에서 💤 · <strong>Jane 보스 호출</strong>을 누르면 모두 회의실로 모여요.</p>
   </section>
 
   <nav class="tabs" role="tablist" aria-label="미팅룸 메뉴">
@@ -1024,6 +1072,19 @@ const SPOTS = {
   away:    [{ left: 33.5, top: 68.0 }, { left: 59.0, top: 68.0 }, { left: 26.5, top: 72.5 }, { left: 66.0, top: 73.0 }]
 };
 
+/* 작업 책상 3개 위 모니터의 '화면(베젤 안쪽 검은 부분)' 좌표(%)
+   office-bg.png(1672 × 941)에서 화면 영역을 픽셀로 재서 맞췄다.
+   - 왼쪽  화면: x 562–643, y 421–463  → 82 × 43 px
+   - 가운데 화면: x 795–875, y 425–466  → 81 × 42 px
+   - 오른쪽 화면: x 1036–1117, y 423–465 → 82 × 43 px */
+const MONITOR_SPOTS = [
+  { left: 36.03, top: 46.97, width: 4.90, height: 4.57 },
+  { left: 49.94, top: 47.34, width: 4.84, height: 4.46 },
+  { left: 64.38, top: 47.18, width: 4.90, height: 4.57 }
+];
+/* 지휘실 보스 책상 노트북의 뒤판(모니터 반대면) 가운데 — 여기에 스티커처럼 보스 엠블럼 */
+const BOSS_DECAL = { left: 50.20, top: 24.01, width: 1.50 };
+
 function isAwayState(p) { return !p || !p.state || p.state === "자리비움"; }
 function isBossName(name) {
   const n = String(name || "").trim();
@@ -1050,7 +1111,7 @@ function officeLayout(people, meetingActive) {
     const i = counters[key]++;
     const base = list[i % list.length];
     const cyc = Math.floor(i / list.length);
-    return { left: base.left + cyc * 3.2, top: base.top + cyc * 1.6, zone };
+    return { left: base.left + cyc * 3.2, top: base.top + cyc * 1.6, zone, slot: i };
   };
   const active = people.filter((p) => !isAwayState(p));
   const away = people.filter((p) => isAwayState(p));
@@ -1406,6 +1467,80 @@ function charSvg(kind, name) {
   return chibiSvg(chibiPalette(kind, name));
 }
 
+/* ===== 모니터 화면에 켜지는 대표 아이콘 ===== */
+const BOSS_GLYPH = '<path d="M9.4 10.2 L11.2 4.6 L14.8 7.7 L16 3.2 L17.2 7.7 L20.8 4.6 L22.6 10.2 Z" fill="#F7C948" stroke="#D9A21B" stroke-width="1.1" stroke-linejoin="round"/>'
+  + '<circle cx="16" cy="3.4" r="1.15" fill="#FFF9E0" stroke="#D9A21B" stroke-width=".5"/>'
+  + '<path d="M8.6 14.4 L16 28.4 L23.4 14.4" fill="none" stroke="#EDE9FE" stroke-width="3.9" stroke-linecap="round" stroke-linejoin="round"/>'
+  + '<path d="M8.6 14.4 L16 28.4 L23.4 14.4" fill="none" stroke="#8B5CF6" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/>'
+  + '<circle cx="10.4" cy="12.2" r=".95" fill="#F5F3FF" opacity=".9"/>'
+  + '<circle cx="21.8" cy="12.6" r=".75" fill="#F5F3FF" opacity=".8"/>';
+
+const MON_ICONS = {
+  // Jane 보스: 보라색 ㅅ + 작은 금관
+  boss: () => '<svg viewBox="0 0 32 32">' + BOSS_GLYPH + '</svg>',
+  // Annie: 라벤더 토끼
+  annie: () => '<svg viewBox="0 0 32 32">'
+    + '<path d="M11.8 16.6 C9 10 9.2 3.6 11.7 3.4 C14.2 3.2 15.3 9.4 14.6 16.6 Z" fill="#F5F3FF" stroke="#A78BFA" stroke-width="1.2" stroke-linejoin="round"/>'
+    + '<path d="M12.2 14.8 C11 10.4 11.2 5.8 12.2 5.8 C13.2 5.8 13.6 10.2 13.4 14.8 Z" fill="#FBCFE8"/>'
+    + '<path d="M20.2 16.6 C23 10 22.8 3.6 20.3 3.4 C17.8 3.2 16.7 9.4 17.4 16.6 Z" fill="#F5F3FF" stroke="#A78BFA" stroke-width="1.2" stroke-linejoin="round"/>'
+    + '<path d="M19.8 14.8 C21 10.4 20.8 5.8 19.8 5.8 C18.8 5.8 18.4 10.2 18.6 14.8 Z" fill="#FBCFE8"/>'
+    + '<ellipse cx="16" cy="21.4" rx="9.6" ry="7.8" fill="#F5F3FF" stroke="#A78BFA" stroke-width="1.3"/>'
+    + '<circle cx="12.4" cy="21" r="1.4" fill="#4C1D95"/><circle cx="19.6" cy="21" r="1.4" fill="#4C1D95"/>'
+    + '<circle cx="11.9" cy="20.4" r=".5" fill="#FFFFFF"/><circle cx="19.1" cy="20.4" r=".5" fill="#FFFFFF"/>'
+    + '<ellipse cx="10" cy="23.9" rx="1.7" ry="1.1" fill="#FBCFE8"/>'
+    + '<ellipse cx="22" cy="23.9" rx="1.7" ry="1.1" fill="#FBCFE8"/>'
+    + '<path d="M15.1 23.3 Q16 24.4 16.9 23.3" stroke="#DB2777" stroke-width="1" fill="none" stroke-linecap="round"/>'
+    + '</svg>',
+  // 부이Jane: 하늘색 별
+  buyi: () => '<svg viewBox="0 0 32 32">'
+    + '<path d="M16 4 L18.94 11.95 L27.41 12.29 L20.76 17.55 L23.05 25.71 L16 21 L8.95 25.71 L11.24 17.55 L4.59 12.29 L13.06 11.95 Z" fill="#7DD3FC" stroke="#0284C7" stroke-width="1.3" stroke-linejoin="round"/>'
+    + '<circle cx="13" cy="14.2" r="1.7" fill="#FFFFFF" opacity=".85"/>'
+    + '<path d="M25.6 4.4 L26.4 6.8 L28.8 7.6 L26.4 8.4 L25.6 10.8 L24.8 8.4 L22.4 7.6 L24.8 6.8 Z" fill="#FFF7C2" stroke="#FDE68A" stroke-width=".4" stroke-linejoin="round"/>'
+    + '</svg>',
+  // 뮤즈Jane: 코랄 베레모 + 하트
+  muse: () => '<svg viewBox="0 0 32 32">'
+    + '<path d="M7.4 13 C6.2 6.8 11.2 2.4 16.6 2.8 C22 3.2 26.2 6.8 25.4 11.8 C21 9.8 12.6 10.8 7.4 13 Z" fill="#FB7185" stroke="#BE123C" stroke-width="1.2" stroke-linejoin="round"/>'
+    + '<path d="M8 12.2 C12.4 10.2 21 9.6 25.2 11.2" stroke="#BE123C" stroke-width="1.2" fill="none" opacity=".45"/>'
+    + '<circle cx="16.4" cy="2.8" r="1.4" fill="#BE123C"/>'
+    + '<path d="M16 29.2 C12.4 25.4 8.4 22.4 8.4 18 C8.4 15.2 10.6 13.4 13.1 13.4 C14.8 13.4 15.7 14.3 16 15.3 C16.3 14.3 17.2 13.4 18.9 13.4 C21.4 13.4 23.6 15.2 23.6 18 C23.6 22.4 19.6 25.4 16 29.2 Z" fill="#FB7185" stroke="#BE123C" stroke-width="1.2" stroke-linejoin="round"/>'
+    + '<circle cx="13" cy="17.8" r="1.4" fill="#FFFFFF" opacity=".5"/>'
+    + '<path d="M26.6 17.6 L27.3 19.6 L29.3 20.3 L27.3 21 L26.6 23 L25.9 21 L23.9 20.3 L25.9 19.6 Z" fill="#FDE68A"/>'
+    + '<path d="M5.4 21.4 L5.9 22.7 L7.2 23.2 L5.9 23.7 L5.4 25 L4.9 23.7 L3.6 23.2 L4.9 22.7 Z" fill="#FDE68A" opacity=".8"/>'
+    + '</svg>'
+};
+
+const MON_COLORS = {
+  boss:  ['#DDD6FE', 'rgba(139,92,246,.52)'],
+  annie: ['#EDE9FE', 'rgba(196,181,253,.5)'],
+  buyi:  ['#BAE6FD', 'rgba(56,189,248,.5)'],
+  muse:  ['#FECDD3', 'rgba(251,113,133,.5)']
+};
+
+function escHtml(s) {
+  return String(s == null ? "" : s).replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+function hexToRgba(hex, a) {
+  const m = /^#?([0-9a-f]{6})$/i.exec(String(hex || ""));
+  if (!m) return "rgba(154,107,63," + a + ")";
+  const n = parseInt(m[1], 16);
+  return "rgba(" + ((n >> 16) & 255) + "," + ((n >> 8) & 255) + "," + (n & 255) + "," + a + ")";
+}
+function monColors(kind, name) {
+  if (MON_COLORS[kind]) return MON_COLORS[kind];
+  const pal = chibiPalette(kind, name);
+  return [pal.hairL, hexToRgba(pal.hair, 0.5)];
+}
+function monitorIconSvg(kind, name) {
+  if (MON_ICONS[kind]) return MON_ICONS[kind]();
+  const pal = chibiPalette(kind, name);
+  return '<svg viewBox="0 0 32 32">'
+    + '<rect x="4.5" y="5.5" width="23" height="23" rx="8" fill="' + pal.dress + '" stroke="' + pal.dressD + '" stroke-width="1.2"/>'
+    + '<text x="16" y="22.6" text-anchor="middle" font-size="13" font-weight="700" font-family="Jua, sans-serif" fill="#FFFFFF">' + escHtml(initial(name)) + '</text>'
+    + '<path d="M25.4 2.6 L26.2 4.9 L28.5 5.7 L26.2 6.5 L25.4 8.8 L24.6 6.5 L22.3 5.7 L24.6 4.9 Z" fill="#FFF7C2"/>'
+    + '</svg>';
+}
+
 function bubbleText(p) {
   if (p.stateMsg) return p.stateMsg;
   if (isAwayState(p)) return "자리를 비웠어요 💤";
@@ -1456,6 +1591,69 @@ function applyChar(el, p, spot, meeting) {
   }
 }
 
+/* --- 모니터 화면: 작업 책상 3개 + 보스 노트북 스티커 --- */
+let monitorEls = null;
+
+function buildMonitors() {
+  if (monitorEls) return monitorEls;
+  const box = $("diorama");
+  if (!box) return null;
+  const monitors = MONITOR_SPOTS.map((s) => {
+    const el = document.createElement("div");
+    el.className = "monitor";
+    el.setAttribute("aria-hidden", "true");
+    el.style.left = s.left + "%";
+    el.style.top = s.top + "%";
+    el.style.width = s.width + "%";
+    el.style.height = s.height + "%";
+    el.innerHTML = '<span class="mon-screen"></span><span class="mon-tint"></span>'
+      + '<span class="mon-icon"></span><span class="mon-sheen"></span>'
+      + '<span class="monitor-glow"></span>';
+    box.appendChild(el);
+    return el;
+  });
+  const decal = document.createElement("div");
+  decal.className = "boss-decal";
+  decal.setAttribute("aria-hidden", "true");
+  decal.style.left = BOSS_DECAL.left + "%";
+  decal.style.top = BOSS_DECAL.top + "%";
+  decal.style.width = BOSS_DECAL.width + "%";
+  decal.innerHTML = '<svg viewBox="0 0 32 32">'
+    + '<circle cx="16" cy="16" r="15" fill="#FFF9EC" stroke="#E0C48F" stroke-width="1.2"/>'
+    + '<g transform="translate(16 16) scale(.66) translate(-16 -16)">' + BOSS_GLYPH + '</g>'
+    + '</svg>';
+  box.appendChild(decal);
+  monitorEls = { monitors, decal };
+  return monitorEls;
+}
+
+function updateMonitors(people, layout, meeting) {
+  const els = buildMonitors();
+  if (!els) return;
+  const desks = [null, null, null];
+  for (const p of people) {
+    const sp = layout.get(p.id);
+    if (!sp || sp.zone !== "desks" || typeof sp.slot !== "number") continue;
+    if (sp.slot < 3 && p.state === "작업중") desks[sp.slot] = p;
+  }
+  els.monitors.forEach((el, i) => {
+    const p = desks[i];
+    el.classList.toggle("on", !!p);
+    const sig = p ? charKind(p.name) + "|" + (p.name || "") : "";
+    if (el.dataset.who === sig) return;
+    el.dataset.who = sig;
+    const icon = el.querySelector(".mon-icon");
+    if (!p) { icon.innerHTML = ""; return; }
+    const kind = charKind(p.name);
+    const [solid, soft] = monColors(kind, p.name);
+    el.style.setProperty("--mon-a", solid);
+    el.style.setProperty("--mon-a-soft", soft);
+    icon.innerHTML = monitorIconSvg(kind, p.name);
+  });
+  const bossWorking = !meeting && people.some((p) => isBossName(p.name) && p.state === "작업중");
+  els.decal.classList.toggle("on", bossWorking);
+}
+
 function renderOffice() {
   const box = $("diorama");
   if (!box) return;
@@ -1482,6 +1680,7 @@ function renderOffice() {
   }
 
   const layout = officeLayout(people, meeting);
+  updateMonitors(people, layout, meeting);
   const seen = new Set();
   let i = 0;
   for (const p of people) {

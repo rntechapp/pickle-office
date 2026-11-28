@@ -602,7 +602,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
-import { getDatabase, ref, onValue, onDisconnect, push, set, update, remove, serverTimestamp }
+import { getDatabase, ref, onValue, push, set, update, remove, serverTimestamp }
   from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
 
 const firebaseConfig = {
@@ -836,18 +836,12 @@ function subscribeRoom() {
 }
 
 function registerPresence() {
-  if (presenceRef) {
-    try { onDisconnect(presenceRef).cancel(); } catch (e) { /* ignore */ }
-    presenceRef = null;
-  }
-  if (!myName) return;
+  // 연결이 끊겨도 상태는 건드리지 않는다. 직접 상태를 바꾸거나 출퇴근 루틴으로 바꾸기 전까지 그대로 유지된다.
+  if (!myName) { presenceRef = null; return; }
   const meRef = ref(db, "rooms/" + roomId + "/status/" + myId);
   presenceRef = meRef;
   const base = { name: myName, state: myState };
   if (statusMessage !== null) base.stateMsg = statusMessage;
-  try {
-    onDisconnect(meRef).update(Object.assign({}, base, { state: "자리비움", updatedAt: serverTimestamp() })).catch(() => {});
-  } catch (e) { /* ignore */ }
   update(meRef, Object.assign({}, base, { updatedAt: serverTimestamp() }))
     .catch((e) => toast("상태 저장 실패: " + shortErr(e)));
 }

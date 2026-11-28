@@ -458,14 +458,6 @@
   }
   .monitor.on .mon-sheen{opacity:.3}
 
-  /* 지휘실 노트북 뒤판에 붙은 보스 스티커 (화면이 뒤를 향해 있다) */
-  .boss-decal{
-    position:absolute;transform:translate(-50%,-50%);z-index:5;pointer-events:none;
-    aspect-ratio:1;opacity:.5;transition:opacity .5s ease,filter .5s ease;
-  }
-  .boss-decal svg{display:block;width:100%;height:100%;overflow:visible}
-  .boss-decal.on{opacity:1;filter:drop-shadow(0 0 max(.6px,.3cqw) rgba(167,139,250,.9))}
-
   @media (max-width:620px){
     .app{padding:14px 12px 34px}
     /* 좌표가 가까운 캐릭터의 이름표가 서로 가리지 않도록 엇갈려 놓기 */
@@ -1082,8 +1074,8 @@ const MONITOR_SPOTS = [
   { left: 49.94, top: 47.34, width: 4.84, height: 4.46 },
   { left: 64.38, top: 47.18, width: 4.90, height: 4.57 }
 ];
-/* 지휘실 보스 책상 노트북의 뒤판(모니터 반대면) 가운데 — 여기에 스티커처럼 보스 엠블럼 */
-const BOSS_DECAL = { left: 50.20, top: 24.01, width: 1.50 };
+/* 지휘실 보스 책상의 노트북은 화면이 벽 쪽을 향해 뒤판만 보이고, 보스 캐릭터와 이름표가
+   그 자리를 가리므로 화면·스티커를 그리지 않는다. 보스의 대표 아이콘은 캐릭터 옆 상태 배지가 맡는다. */
 
 function isAwayState(p) { return !p || !p.state || p.state === "자리비움"; }
 function isBossName(name) {
@@ -1591,7 +1583,7 @@ function applyChar(el, p, spot, meeting) {
   }
 }
 
-/* --- 모니터 화면: 작업 책상 3개 + 보스 노트북 스티커 --- */
+/* --- 모니터 화면: 작업 책상 3개 --- */
 let monitorEls = null;
 
 function buildMonitors() {
@@ -1612,22 +1604,11 @@ function buildMonitors() {
     box.appendChild(el);
     return el;
   });
-  const decal = document.createElement("div");
-  decal.className = "boss-decal";
-  decal.setAttribute("aria-hidden", "true");
-  decal.style.left = BOSS_DECAL.left + "%";
-  decal.style.top = BOSS_DECAL.top + "%";
-  decal.style.width = BOSS_DECAL.width + "%";
-  decal.innerHTML = '<svg viewBox="0 0 32 32">'
-    + '<circle cx="16" cy="16" r="15" fill="#FFF9EC" stroke="#E0C48F" stroke-width="1.2"/>'
-    + '<g transform="translate(16 16) scale(.66) translate(-16 -16)">' + BOSS_GLYPH + '</g>'
-    + '</svg>';
-  box.appendChild(decal);
-  monitorEls = { monitors, decal };
+  monitorEls = { monitors };
   return monitorEls;
 }
 
-function updateMonitors(people, layout, meeting) {
+function updateMonitors(people, layout) {
   const els = buildMonitors();
   if (!els) return;
   const desks = [null, null, null];
@@ -1650,8 +1631,6 @@ function updateMonitors(people, layout, meeting) {
     el.style.setProperty("--mon-a-soft", soft);
     icon.innerHTML = monitorIconSvg(kind, p.name);
   });
-  const bossWorking = !meeting && people.some((p) => isBossName(p.name) && p.state === "작업중");
-  els.decal.classList.toggle("on", bossWorking);
 }
 
 function renderOffice() {
@@ -1680,7 +1659,7 @@ function renderOffice() {
   }
 
   const layout = officeLayout(people, meeting);
-  updateMonitors(people, layout, meeting);
+  updateMonitors(people, layout);
   const seen = new Set();
   let i = 0;
   for (const p of people) {

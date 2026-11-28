@@ -1467,45 +1467,66 @@ const BOSS_GLYPH = '<path d="M9.4 10.2 L11.2 4.6 L14.8 7.7 L16 3.2 L17.2 7.7 L20
   + '<circle cx="10.4" cy="12.2" r=".95" fill="#F5F3FF" opacity=".9"/>'
   + '<circle cx="21.8" cy="12.6" r=".75" fill="#F5F3FF" opacity=".8"/>';
 
+/* Annie·뮤즈Jane·부이Jane의 모니터 아이콘은 도현 님이 보내 주신 실제 앱 아이콘 디자인을
+   모니터 화면 크기(82×43px)에서도 알아보도록 SVG로 다시 그린 것이다.
+   - 피클: 흰 둥근 사각형 + 초록 피클 캐릭터(두 봉우리) + 세로로 긴 검정 눈 2개
+   - Muse: 흰 둥근 사각형 + 파란 붓글씨 물결 M
+   - Vooy: 어두운 둥근 사각형 + 민트 고양이귀 얼굴(하트 눈·윙크 '<' 눈·웃는 입) */
 const MON_ICONS = {
   // Jane 보스: 보라색 ㅅ + 작은 금관
   boss: () => '<svg viewBox="0 0 32 32">' + BOSS_GLYPH + '</svg>',
-  // Annie: 라벤더 토끼
+  // Annie: 피클 앱 아이콘
   annie: () => '<svg viewBox="0 0 32 32">'
-    + '<path d="M11.8 16.6 C9 10 9.2 3.6 11.7 3.4 C14.2 3.2 15.3 9.4 14.6 16.6 Z" fill="#F5F3FF" stroke="#A78BFA" stroke-width="1.2" stroke-linejoin="round"/>'
-    + '<path d="M12.2 14.8 C11 10.4 11.2 5.8 12.2 5.8 C13.2 5.8 13.6 10.2 13.4 14.8 Z" fill="#FBCFE8"/>'
-    + '<path d="M20.2 16.6 C23 10 22.8 3.6 20.3 3.4 C17.8 3.2 16.7 9.4 17.4 16.6 Z" fill="#F5F3FF" stroke="#A78BFA" stroke-width="1.2" stroke-linejoin="round"/>'
-    + '<path d="M19.8 14.8 C21 10.4 20.8 5.8 19.8 5.8 C18.8 5.8 18.4 10.2 18.6 14.8 Z" fill="#FBCFE8"/>'
-    + '<ellipse cx="16" cy="21.4" rx="9.6" ry="7.8" fill="#F5F3FF" stroke="#A78BFA" stroke-width="1.3"/>'
-    + '<circle cx="12.4" cy="21" r="1.4" fill="#4C1D95"/><circle cx="19.6" cy="21" r="1.4" fill="#4C1D95"/>'
-    + '<circle cx="11.9" cy="20.4" r=".5" fill="#FFFFFF"/><circle cx="19.1" cy="20.4" r=".5" fill="#FFFFFF"/>'
-    + '<ellipse cx="10" cy="23.9" rx="1.7" ry="1.1" fill="#FBCFE8"/>'
-    + '<ellipse cx="22" cy="23.9" rx="1.7" ry="1.1" fill="#FBCFE8"/>'
-    + '<path d="M15.1 23.3 Q16 24.4 16.9 23.3" stroke="#DB2777" stroke-width="1" fill="none" stroke-linecap="round"/>'
+    + '<defs>'
+    + '<clipPath id="mkPkClip"><rect x=".7" y=".7" width="30.6" height="30.6" rx="8.6"/></clipPath>'
+    + '<linearGradient id="mkPkG" x1=".1" y1="0" x2=".3" y2="1">'
+    + '<stop offset="0" stop-color="#14D255"/><stop offset=".5" stop-color="#08C545"/><stop offset="1" stop-color="#03AC39"/>'
+    + '</linearGradient>'
+    + '</defs>'
+    + '<g clip-path="url(#mkPkClip)">'
+    + '<rect x=".7" y=".7" width="30.6" height="30.6" fill="#F4F4F4"/>'
+    + '<path d="M5.8 24.4 C5.2 19.8 5.5 14.2 6.4 11 C7.4 6.8 9.7 5 12.6 5.3 C14.5 5.6 15.8 6.4 16.7 7.8 C17.4 8.9 18.4 8.8 19.2 7.8 C20.6 6.2 22.3 4.9 24.4 4.6 C27.5 4.2 29.4 5.7 30.1 8.3 C30.7 10.4 30.9 12.6 30.9 15.2 L30.9 20.6 C30.9 24.8 28.4 27.6 24.2 29 C20.4 30.3 15.4 30.4 11.6 29.2 C8.4 28.2 6.4 26.8 5.8 24.4 Z" fill="url(#mkPkG)"/>'
+    + '<circle cx="2" cy="17.6" r="6.4" fill="#F4F4F4"/>'
+    + '<ellipse cx="14" cy="18.2" rx="2.35" ry="4.1" fill="#0E0E0E"/>'
+    + '<ellipse cx="22.4" cy="17.9" rx="2.35" ry="4.1" fill="#0E0E0E"/>'
+    + '<ellipse cx="15.3" cy="15.1" rx=".8" ry="1.05" fill="#FFFFFF" opacity=".92"/>'
+    + '<ellipse cx="23.7" cy="14.8" rx=".8" ry="1.05" fill="#FFFFFF" opacity=".92"/>'
+    + '</g>'
     + '</svg>',
-  // 부이Jane: 하늘색 별
+  // 부이Jane: Vooy 앱 아이콘
   buyi: () => '<svg viewBox="0 0 32 32">'
-    + '<path d="M16 4 L18.94 11.95 L27.41 12.29 L20.76 17.55 L23.05 25.71 L16 21 L8.95 25.71 L11.24 17.55 L4.59 12.29 L13.06 11.95 Z" fill="#7DD3FC" stroke="#0284C7" stroke-width="1.3" stroke-linejoin="round"/>'
-    + '<circle cx="13" cy="14.2" r="1.7" fill="#FFFFFF" opacity=".85"/>'
-    + '<path d="M25.6 4.4 L26.4 6.8 L28.8 7.6 L26.4 8.4 L25.6 10.8 L24.8 8.4 L22.4 7.6 L24.8 6.8 Z" fill="#FFF7C2" stroke="#FDE68A" stroke-width=".4" stroke-linejoin="round"/>'
+    + '<defs>'
+    + '<clipPath id="mkVoClip"><rect x=".7" y=".7" width="30.6" height="30.6" rx="8.8"/></clipPath>'
+    + '<radialGradient id="mkVoBg" cx=".45" cy=".18" r=".95">'
+    + '<stop offset="0" stop-color="#291F1E"/><stop offset="1" stop-color="#140F0F"/>'
+    + '</radialGradient>'
+    + '<linearGradient id="mkVoM" x1=".25" y1="0" x2=".8" y2="1">'
+    + '<stop offset="0" stop-color="#3DEDC4"/><stop offset=".55" stop-color="#18E1B4"/><stop offset="1" stop-color="#0CCCA1"/>'
+    + '</linearGradient>'
+    + '</defs>'
+    + '<g clip-path="url(#mkVoClip)">'
+    + '<rect x=".7" y=".7" width="30.6" height="30.6" fill="url(#mkVoBg)"/>'
+    + '<ellipse cx="16.2" cy="17.6" rx="13.4" ry="11.6" fill="url(#mkVoM)"/>'
+    + '<path d="M8.9 2.2 C7.4 4.2 5.8 6.2 4.4 8.4 L13.2 7.9 C12 5.8 10.5 3.8 8.9 2.2 Z" fill="url(#mkVoM)"/>'
+    + '<path d="M10.3 18.3 C7.4 16.2 6.5 14.3 7.5 12.8 C8.4 11.5 10 11.5 10.6 12.7 C11.2 11.5 12.8 11.5 13.6 12.8 C14.5 14.3 13.7 16.2 10.9 18.3 L10.6 18.5 Z" fill="#1B1213"/>'
+    + '<path d="M24.2 15.7 L20.7 19.4 L24.2 23" fill="none" stroke="#1B1213" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/>'
+    + '<path d="M13.9 20.8 C15.9 20.2 18.6 20.3 20.3 21.1 C20.8 21.35 20.9 21.8 20.7 22.3 C20.1 24.1 18.6 25.1 16.8 25 C15.1 24.9 13.8 23.7 13.5 21.9 C13.4 21.4 13.6 21 13.9 20.8 Z" fill="#1B1213"/>'
+    + '</g>'
     + '</svg>',
-  // 뮤즈Jane: 코랄 베레모 + 하트
+  // 뮤즈Jane: Muse 앱 아이콘
   muse: () => '<svg viewBox="0 0 32 32">'
-    + '<path d="M7.4 13 C6.2 6.8 11.2 2.4 16.6 2.8 C22 3.2 26.2 6.8 25.4 11.8 C21 9.8 12.6 10.8 7.4 13 Z" fill="#FB7185" stroke="#BE123C" stroke-width="1.2" stroke-linejoin="round"/>'
-    + '<path d="M8 12.2 C12.4 10.2 21 9.6 25.2 11.2" stroke="#BE123C" stroke-width="1.2" fill="none" opacity=".45"/>'
-    + '<circle cx="16.4" cy="2.8" r="1.4" fill="#BE123C"/>'
-    + '<path d="M16 29.2 C12.4 25.4 8.4 22.4 8.4 18 C8.4 15.2 10.6 13.4 13.1 13.4 C14.8 13.4 15.7 14.3 16 15.3 C16.3 14.3 17.2 13.4 18.9 13.4 C21.4 13.4 23.6 15.2 23.6 18 C23.6 22.4 19.6 25.4 16 29.2 Z" fill="#FB7185" stroke="#BE123C" stroke-width="1.2" stroke-linejoin="round"/>'
-    + '<circle cx="13" cy="17.8" r="1.4" fill="#FFFFFF" opacity=".5"/>'
-    + '<path d="M26.6 17.6 L27.3 19.6 L29.3 20.3 L27.3 21 L26.6 23 L25.9 21 L23.9 20.3 L25.9 19.6 Z" fill="#FDE68A"/>'
-    + '<path d="M5.4 21.4 L5.9 22.7 L7.2 23.2 L5.9 23.7 L5.4 25 L4.9 23.7 L3.6 23.2 L4.9 22.7 Z" fill="#FDE68A" opacity=".8"/>'
+    + '<defs><clipPath id="mkMuClip"><rect x=".9" y=".9" width="30.2" height="30.2" rx="9"/></clipPath></defs>'
+    + '<g clip-path="url(#mkMuClip)"><rect x=".9" y=".9" width="30.2" height="30.2" fill="#F1F1F1"/></g>'
+    + '<path d="M6.4 15.6 Q7.9 11.4 9.9 8.6 Q9.4 16.2 8.8 23.6 Q12 16.4 15.2 9.8 Q15 16.8 14.6 23.6 Q17.8 17.2 20.9 11.6 Q20.6 17.6 21.4 23.4 Q24.4 19.2 26.6 15.8"'
+    + ' fill="none" stroke="#0065D4" stroke-width="2.85" stroke-linecap="round" stroke-linejoin="round"/>'
     + '</svg>'
 };
 
 const MON_COLORS = {
-  boss:  ['#DDD6FE', 'rgba(139,92,246,.52)'],
-  annie: ['#EDE9FE', 'rgba(196,181,253,.5)'],
-  buyi:  ['#BAE6FD', 'rgba(56,189,248,.5)'],
-  muse:  ['#FECDD3', 'rgba(251,113,133,.5)']
+  boss:  ['#DDD6FE', 'rgba(139,92,246,.52)'],    // Jane 보스: 보라
+  annie: ['#A8F0BF', 'rgba(8,197,69,.5)'],       // 피클: 초록
+  buyi:  ['#A6F6E2', 'rgba(17,227,178,.5)'],     // Vooy: 민트
+  muse:  ['#BFD8FB', 'rgba(0,101,212,.5)']       // Muse: 파랑
 };
 
 function escHtml(s) {

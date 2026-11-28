@@ -340,12 +340,14 @@
   .pill.calling{color:#fff;border-color:transparent;background:linear-gradient(140deg,#E08A6E,#C25E44);box-shadow:0 8px 20px rgba(194,94,68,.3);animation:callGlow 1.9s ease-in-out infinite}
   @keyframes callGlow{0%,100%{box-shadow:0 8px 20px rgba(194,94,68,.26)}50%{box-shadow:0 8px 28px rgba(194,94,68,.52)}}
 
+  /* 가로로 긴 반원형 오피스: 배경 이미지 실제 비율(1672 × 941)을 그대로 쓴다 */
   .diorama{
     position:relative;width:100%;border-radius:20px;overflow:hidden;
     container-type:inline-size;background:#FBF5EC;
+    aspect-ratio:1672 / 941;
     box-shadow:inset 0 0 0 1px rgba(160,120,80,.16), 0 12px 28px rgba(120,80,50,.10);
   }
-  .diorama > img{display:block;width:100%;height:auto;border-radius:20px;user-select:none;-webkit-user-drag:none}
+  .diorama > img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;border-radius:20px;user-select:none;-webkit-user-drag:none}
   .diorama.no-motion .char-body{animation:none}
 
   .zone{position:absolute;transform:translate(-50%,-50%);pointer-events:none;z-index:4}
@@ -369,7 +371,7 @@
 
   .char{
     position:absolute;transform:translate(-50%,-100%);
-    width:6.6cqw;min-width:24px;max-width:66px;
+    width:5.6cqw;min-width:26px;max-width:62px;
     padding:0;border:0;background:none;cursor:pointer;z-index:6;
     -webkit-tap-highlight-color:transparent;
     transition:left .9s cubic-bezier(.35,.1,.25,1), top .9s cubic-bezier(.35,.1,.25,1), opacity .35s ease, filter .35s ease;
@@ -488,9 +490,9 @@
     </div>
 
     <div class="diorama" id="diorama">
-      <img src="office-bg.png" alt="비서 오피스 디오라마 — 반원형 회의실(원형 테이블), 작업 책상, 휴식공간" width="1254" height="1254">
-      <div class="zone" data-zone="meet" style="left:19.5%;top:67.8%"><span class="zone-pill">🏛️ 회의실</span></div>
-      <div class="zone" data-zone="lounge" style="left:70.6%;top:81.2%"><span class="zone-pill">☕ 휴식공간</span></div>
+      <img src="office-bg.png" alt="비서 오피스 디오라마 — 가로로 긴 반원형 오피스, 지휘실·작업 책상 3개·회의실 원형 테이블·휴식공간·아치형 입구" width="1672" height="941">
+      <div class="zone" data-zone="meet" style="left:16.5%;top:72.5%"><span class="zone-pill">🏛️ 회의실</span></div>
+      <div class="zone" data-zone="lounge" style="left:81.5%;top:76%"><span class="zone-pill">☕ 휴식공간</span></div>
     </div>
     <p class="office-foot">작업중 → 각자 책상 · 대기중 → 휴식공간 ☕ · 자리비움 → 입구에서 💤 · <strong>Jane 보스 호출</strong>을 누르면 모두 회의실로 모여요.</p>
   </section>
@@ -1007,14 +1009,19 @@ let motion = localStorage.getItem(LS_MOTION) !== "off";
 let openBubble = null;
 const charEls = new Map();
 
-/* office-bg.png 위 좌표(%). 디오라마 안의 가구 위치를 픽셀 단위로 재서 맞춤.
-   회의실은 반원형 아치 안 원형 테이블(중심 18.6%, 57.6%)을 감싸는 반원 아치로 의자 6개를 배치했다. */
+/* office-bg.png(1672 × 941, 가로로 긴 반원형 오피스) 위 좌표(%).
+   가구 위치를 픽셀 단위로 재서 맞췄다.
+   - 지휘실: 위쪽 곡선 안쪽 중앙의 큰 보스 책상·의자 (50.3%, 27.5%)
+   - 작업 책상: 가운데 3개 (각 책상 의자 아래 35.2 / 50.0 / 63.9%, 65.5%)
+   - 회의실: 왼쪽 원형 테이블(중심 16.5%, 55%) 둘레 의자 6개
+   - 휴식공간: 오른쪽 L자 소파와 원형 커피 테이블의 러그 위 (72~87%, 62~71%)
+   - 입구: 아래 정면 아치형 문 양옆 (33.5 / 59%, 68%) */
 const SPOTS = {
-  boss:    [{ left: 52.3, top: 24.8 }],
-  desks:   [{ left: 42.0, top: 57.0 }, { left: 55.3, top: 57.0 }, { left: 69.0, top: 57.0 }],
-  lounge:  [{ left: 63.6, top: 69.6 }, { left: 70.0, top: 69.6 }, { left: 76.4, top: 69.6 }, { left: 83.8, top: 72.4 }],
-  meeting: [{ left: 19.2, top: 52.4 }, { left: 10.8, top: 60.2 }, { left: 27.2, top: 57.6 }, { left: 14.6, top: 54.2 }, { left: 24.2, top: 54.6 }, { left: 13.0, top: 64.6 }],
-  away:    [{ left: 37.6, top: 69.2 }, { left: 52.6, top: 69.4 }]
+  boss:    [{ left: 50.3, top: 27.5 }],
+  desks:   [{ left: 35.2, top: 65.5 }, { left: 50.0, top: 65.5 }, { left: 63.9, top: 65.5 }],
+  lounge:  [{ left: 72.6, top: 62.0 }, { left: 79.4, top: 71.0 }, { left: 87.4, top: 66.0 }, { left: 68.5, top: 69.5 }],
+  meeting: [{ left: 16.5, top: 50.0 }, { left: 8.0, top: 60.0 }, { left: 26.2, top: 56.5 }, { left: 17.2, top: 67.5 }, { left: 11.0, top: 51.0 }, { left: 21.8, top: 49.5 }],
+  away:    [{ left: 33.5, top: 68.0 }, { left: 59.0, top: 68.0 }, { left: 26.5, top: 72.5 }, { left: 66.0, top: 73.0 }]
 };
 
 function isAwayState(p) { return !p || !p.state || p.state === "자리비움"; }
